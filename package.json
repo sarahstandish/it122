@@ -1,0 +1,23 @@
+{
+  "name": "it122",
+  "version": "1.0.0",
+  "description": "Assignments for IT122 taken in Spring 2021.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarahstandish/it122.git"
+  },
+  "author": "Sarah Standish",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarahstandish/it122/issues"
+  },
+  "homepage": "https://github.com/sarahstandish/it122#readme"
+}

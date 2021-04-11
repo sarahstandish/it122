@@ -1,0 +1,5 @@
+.vs/
+
+*.txt
+node_modules/
+class_work/
