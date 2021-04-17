@@ -19,5 +19,6 @@
   "bugs": {
     "url": "https://github.com/sarahstandish/it122/issues"
   },
-  "homepage": "https://github.com/sarahstandish/it122#readme"
+  "homepage": "https://github.com/sarahstandish/it122#readme",
+  "type" : "module"
 }
