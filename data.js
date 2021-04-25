@@ -1,5 +1,6 @@
 let arabicFilms = [
     {
+        id: 0,
         title: "The Perfect Candidate",
         arabicTitle: "المرحشة المثالية",
         country: "Saudi Arabia",
@@ -7,6 +8,7 @@ let arabicFilms = [
         year:  2019
     },
     {
+        id: 1,
         title: "Captains of Zaatari",
         arabicTitle: "كباتن الزعتري",
         country: "Egypt",
@@ -14,6 +16,7 @@ let arabicFilms = [
         year:  2021,
     },
     {
+        id: 2,
         title: "The Unknown Saint",
         arabicTitle: "سيد المجهول",
         country: "Morocco",
@@ -21,6 +24,7 @@ let arabicFilms = [
         year:  2019 
     },
     {
+        id: 3,
         title: "The Translator",
         arabicTitle: "المترجم",
         country: "Syria",
@@ -28,6 +32,7 @@ let arabicFilms = [
         year:  2020
     },
     {
+        id: 4,
         title: "200 Meters",
         arabicTitle: "200 متر",
         country: "Palestine",
@@ -40,9 +45,9 @@ const getAll = () => {
     return arabicFilms;
 };
 
-const getItem = (title) => {
+const getItem = (id) => {
     return arabicFilms.find((film) => {
-        return film.title.toLowerCase() === title.toLowerCase();
+        return film.id === parseInt(id);
     })
 };
 

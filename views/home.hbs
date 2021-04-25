@@ -1,0 +1,19 @@
+<html> 
+    <head>
+        <title>Home</title>
+        <meta charset=utf-8>
+        <link rel="stylesheet" href="/css/styles.css">
+        <link rel='preconnect' href='https://fonts.gstatic.com'>
+        <link href='https://fonts.googleapis.com/css2?family=Montserrat&family=Syne:wght@400;500&display=swap' rel='stylesheet'> 
+    </head>
+
+    <body>
+        <h1>Home</h1>
+        <h2>Films</h2>
+        <ul>
+        {{#each films}}
+            <li><a href="/detail?id={{id}}">{{title}}</a></li>
+        {{/each}}
+        </ul>
+    </body>
+</html>
