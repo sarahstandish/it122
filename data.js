@@ -2,7 +2,7 @@ let arabicFilms = [
     {
         id: 0,
         title: "The Perfect Candidate",
-        arabicTitle: "المرحشة المثالية",
+        arabicTitle: "المرشحة المثالية",
         country: "Saudi Arabia",
         director: "Haifaa Al-Mansour",
         year:  2019

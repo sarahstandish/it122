@@ -15,7 +15,7 @@ app.listen(app.get('port'), () => {
 })
 
 app.get('/about', (req, res) => {
-    res.send("Sarah Standish is the Deputy Director of OneWorld Now!, a nonprofit after-school world language program for high school students. In her free time, she enjoys reading, cooking, biking, learning web development, and coding.");
+    res.send("مرحبا, Sarah Standish is the Deputy Director of OneWorld Now!, a nonprofit after-school world language program for high school students. In her free time, she enjoys reading, cooking, biking, learning web development, and coding.");
 });
 
 app.get('/detail', (req, res) => {
