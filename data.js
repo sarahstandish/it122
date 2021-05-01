@@ -1,3 +1,5 @@
+import { json } from "express";
+
 let arabicFilms = [
     {
         id: 0,
@@ -48,7 +50,58 @@ const getAll = () => {
 const getItem = (id) => {
     return arabicFilms.find((film) => {
         return film.id === parseInt(id);
-    })
+    });
 };
 
-export { getAll, getItem };
+const titleExists = title => {
+    if(arabicFilms.find(film => film.title.toLowerCase() === title.toLowerCase())) {
+        return true;
+    }
+}
+
+const addItem = obj => {
+
+    let returnObj = {
+        success: false,
+        message: "You must add an object with all required properties."
+    }
+
+    //check that all required properties exist
+    if (obj.title && obj.arabicTitle && obj.director && obj.country && obj.year) {
+
+        // check that the title doesn't already exist
+        if (!titleExists(obj.title)) {
+        //add an id incremented up by one
+        obj.id = arabicFilms.length;
+        arabicFilms.push(obj);
+        returnObj.success = true;
+        returnObj.message = "Successfully added";
+        } else {
+            returnObj.message = "This title already exists";
+        }
+    }
+
+    return returnObj;
+};
+
+const deleteItem = id => {
+
+    let returnObj = {
+        success: false,
+        message: "Film ID doesnt exist"
+    }
+    
+    let film = arabicFilms.find((film) => {
+        return film.id === id;
+    });
+    if (film) {
+        let index = arabicFilms.indexOf(film);
+        arabicFilms.splice(index, 1);
+        returnObj.success = true;
+        returnObj.message = "Sucessfully deleted";
+    }
+
+    return returnObj;
+}
+
+export { getAll, getItem, deleteItem, addItem };

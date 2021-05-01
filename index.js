@@ -3,6 +3,7 @@ import handlebars from 'express-handlebars';
 const app = express();
 import { getAll, getItem } from './data.js';
 
+// eslint-disable-next-line no-undef
 app.set('port', process.env.PORT || 3000);
 app.use(express.urlencoded({extended:false})); // parse url-encoded strings
 app.use(express.json()); // parse json
@@ -15,14 +16,18 @@ app.listen(app.get('port'), () => {
 })
 
 app.get('/about', (req, res) => {
-    res.send("مرحبا, Sarah Standish is the Deputy Director of OneWorld Now!, a nonprofit after-school world language program for high school students. In her free time, she enjoys reading, cooking, biking, learning web development, and coding.");
+    res.send("Sarah Standish is the Deputy Director of OneWorld Now!, a nonprofit after-school world language program for high school students. In her free time, she enjoys reading, cooking, biking, learning web development, and coding.");
 });
 
 app.get('/detail', (req, res) => {
     // return one film
     console.log(req.query);
-    res.render('detail', {film: getItem(req.query.id)})
-    // res.json(getItem(req.query.id));
+    if (getItem(req.query.id)) {
+        res.render('detail', {film: getItem(req.query.id)})
+    } else {
+        //back to home page if passed an invalid id
+        res.render('home', { films: getAll()});    
+    }
 })
 
 app.get('/', (req, res) => {
