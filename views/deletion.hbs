@@ -1,6 +1,6 @@
 <html> 
     <head>
-        <title>Home</title>
+        <title>Movie Deleted</title>
         <meta charset=utf-8>
         <link rel="stylesheet" href="/css/styles.css">
         <link rel='preconnect' href='https://fonts.gstatic.com'>
@@ -8,12 +8,8 @@
     </head>
 
     <body>
-        <h1>Home</h1>
-        <h2>Films</h2>
-        <ul>
-        {{#each movies}}
-            <li><a href="/detail?title={{title}}">{{title}}</a></li>
-        {{/each}}
-        </ul>
+        <h1>Deletion page</h1>
+        <h2>{{title}} has been deleted</h2>
+        <p class='home-button'><a href='/'>Home</a></p>
     </body>
 </html>

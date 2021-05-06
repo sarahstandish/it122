@@ -2,6 +2,7 @@ import express from 'express';
 import handlebars from 'express-handlebars';
 const app = express();
 import { getAll, getItem } from './data.js';
+import { Movie } from './models/movie.js';
 
 // eslint-disable-next-line no-undef
 app.set('port', process.env.PORT || 3000);
@@ -21,18 +22,42 @@ app.get('/about', (req, res) => {
 
 app.get('/detail', (req, res) => {
     // return one film
-    console.log(req.query);
-    if (getItem(req.query.id)) {
-        res.render('detail', {film: getItem(req.query.id)})
-    } else {
-        //back to home page if passed an invalid id
-        res.render('home', { films: getAll()});    
-    }
+
+    Movie.findOne({title: req.query.title})
+        .lean()
+        .exec()
+        .then(film => {
+            if (film) {
+                res.render('detail', { film });
+            } else {
+                res.redirect('/');
+            }
+        });
 })
 
 app.get('/', (req, res) => {
-    res.type('html')
-    res.render('home', { films: getAll()}); //look for home.hbs in the views directory; { films: getAll()} is a context variable used to render when the request comes in. Be sure to keep track of what each name refers to.
+
+    Movie.find({})
+        .lean()
+        .exec()
+        .then(movies => {
+            res.type('html');
+            res.render('home', { movies }); //look for home.hbs in the views directory; { movies } is a context variable used to render when the request comes in. Be sure to keep track of what each name refers to.
+        }).catch(err => console.log(err));  
+});
+
+app.get('/delete', (req, res) => {
+    let title = req.query.title;
+    Movie.deleteOne({title: req.query.title})
+        .exec()
+        .then(deletedMovie => {
+            if (deletedMovie) {
+                res.render('deletion', { title });
+            } else {
+                res.redirect('/');
+            }
+        })
+        .catch(err => console.log(err));
 });
 
 //404 response default

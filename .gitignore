@@ -3,3 +3,6 @@
 *.txt
 node_modules/
 class_work/
+credentials.js
+add_movie.js
+dedupe_movies.js
