@@ -21,9 +21,9 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/detail', (req, res) => {
-    // return one film
 
-    Movie.findOne({title: req.query.title})
+    // return one film
+    Movie.findOne({_id: req.query.id})
         .lean()
         .exec()
         .then(film => {
@@ -47,11 +47,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/delete', (req, res) => {
-    let title = req.query.title;
-    Movie.deleteOne({title: req.query.title})
+   
+    Movie.findByIdAndDelete(req.query.id)
         .exec()
         .then(deletedMovie => {
             if (deletedMovie) {
+                let title = deletedMovie.title;
                 res.render('deletion', { title });
             } else {
                 res.redirect('/');
