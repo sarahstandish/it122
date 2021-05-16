@@ -8,6 +8,10 @@ mongoose.connect(connectionsString, {
     useUnifiedTopology: true
 });
 
+mongoose.set('useFindAndModify', false);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useCreateIndex', true);
+
 // .on is an event listener used for databases, 'open' is the event
 mongoose.connection.on('open', () => {
     console.log('Mongoose connection');
@@ -20,7 +24,7 @@ mongoose.connection.on('open', () => {
 // values indicate the data type of each key
 
 const movieSchema = new Schema({
-    title: {type: String, required: true },
+    title: {type: String, required: true, unique: true },
     arabicTitle: String,
     director: String,
     country: String,
