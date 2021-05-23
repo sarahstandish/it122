@@ -47,7 +47,7 @@ app.get('/', (req, res, next) => {
         .lean()
         .then(movies => {
             res.type('html');
-            res.render('home', { movies }); //look for home.hbs in the views directory; { movies } is a context variable used to render when the request comes in. Be sure to keep track of what each name refers to.
+            res.render('home', {movies: JSON.stringify(movies)}); //look for home.hbs in the views directory; { movies } is a context variable used to render when the request comes in. Be sure to keep track of what each name refers to.
         }).catch(err => next(err));  
 });
 
