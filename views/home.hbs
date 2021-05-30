@@ -15,33 +15,86 @@
     <div id='root'></div>
     <script type = "text/babel" >
 
-            const Movie = props => {
-                console.log(props)
-                let detail_page = "/detail?id=" + props.film._id;
+            const Detail = props => {
+                console.log("Detail")
                 return(
-                    <li><a href={detail_page}>{props.film.title}</a></li>
+                    <div>
+                        <h2>{props.film.title}</h2>
+                        <ul>
+                            <li><b>Title in Arabic:</b> {props.film.arabicTitle}</li>
+                            <li><b>Country of Origin:</b> {props.film.country}</li>
+                            <li><b>Director:</b> {props.film.director}</li>
+                            <li><b>Year:</b> {props.film.year}</li>
+                        </ul>
+                        <p className='home-button' onClick={() => props.onClick({})}>Hide</p>
+                    </div>
                 )
             }
 
-            const Movies = () => {
-                const moviesArray = {{{movies}}}
-
-                let films = moviesArray.map(film => < Movie key={film._id} film={film} />)
-
+            const Movie = props => {
                 return(
-                    <div>
-                        <h1>Home</h1>
-                        <h2>Films</h2>
-                        <ul>
-                            {films}
-                        </ul>
-                    </div>
+                    <li className="movie" onClick={() => props.onClick(props.film)}>{props.film.title}</li>
                 )
+            }
 
+            class Movies extends React.Component {
+
+                constructor() {
+                    super()
+                    this.state = {
+                        films: [],
+                        showDetail: false,
+                        filmDetail: {}
+                    }
+
+                    this.onClick = this.onClick.bind(this);
+                }
+
+                onClick = film => {
+                    console.log("clicked ", film)
+                    this.setState(prevState => {
+                        if (film === prevState.filmDetail || Object.keys(film).length == 0) {
+                            return {
+                                showDetail: false,
+                                filmDetail: {}
+                            }
+                        }
+                        return {
+                                showDetail: true,
+                                filmDetail: film
+                            }
+                    })
+                }
+
+                componentDidMount() {
+                    console.log("mounted, done")
+                    const moviesArray = {{{movies}}}
+
+                    let filmsArray = moviesArray.map(film => < Movie key={film._id} film={film} onClick={this.onClick} />)
+
+                    this.setState({films: filmsArray})
+                }
+
+                render() {
+                    let filmDetail = this.state.filmDetail
+                    return(
+                        <div>
+                            <h1>Home</h1>
+                            <h2>Films</h2>
+                            <ul>
+                                {this.state.films}
+                            </ul>
+                            {this.state.showDetail && < Detail film={filmDetail} onClick={this.onClick} />}
+                            
+                        </div>
+                    )
+                }
             }
             
             ReactDOM.render(
-                <div>< Movies /></div>,
+                <div>
+                    < Movies />
+                </div>,
                 document.getElementById('root')
             )
 
