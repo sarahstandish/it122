@@ -38,7 +38,7 @@ p {
 .home-button {
     margin-top: 20px;
     background-color: var(--accent-color-1);
-    max-width: 75px;
+    max-width: 150px;
     cursor: pointer
 }
 
@@ -64,6 +64,21 @@ img {
     max-width: 90%;
     height: auto;
     margin: 5px auto;
+}
+
+label {
+    display: block;
+    text-align: left;
+    padding: 10px;
+}
+
+form {
+    margin: 0px auto;
+    max-width: 360px;
+    text-align: center;
+    border: 3px solid var(--accent-color-1);
+    padding: 5px;
+
 }
 
 

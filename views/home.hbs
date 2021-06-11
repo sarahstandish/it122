@@ -16,7 +16,6 @@
     <script type = "text/babel" >
 
             const Detail = props => {
-                console.log("Detail")
                 return(
                     <div>
                         <h2>{props.film.title}</h2>
@@ -26,6 +25,43 @@
                             <li><b>Director:</b> {props.film.director}</li>
                             <li><b>Year:</b> {props.film.year}</li>
                         </ul>
+                        <h2>Edit</h2>
+                        <form>
+                            <label>Title: <input 
+                                type="text" 
+                                name="title" 
+                                placeholder={props.film.title}
+                                onChange={props.handleChange}
+                            /></label>
+                            <label>Title in Arabic: <input 
+                                type="text" 
+                                name="arabicTitle" 
+                                placeholder={props.film.arabicTitle}
+                                onChange={props.handleChange}
+                            /></label>
+                            <label>Director: <input 
+                                type="text" 
+                                name="director" 
+                                placeholder={props.film.director}
+                                onChange={props.handleChange}
+                            /></label>
+                            <label>Country: <input 
+                                type="text" 
+                                name="country" 
+                                placeholder={props.film.country}
+                                onChange={props.handleChange}
+                            /></label>
+                            <label>Year: <input 
+                                type="text" 
+                                name="year" 
+                                placeholder={props.film.year}
+                                onChange={props.handleChange}
+                            /></label>
+                        </form>
+                        <p className="home-button" name="save" onClick={() => props.saveForm()}>Save edits</p>
+                        <p className="home-button" name="addNew" onClick={props.addNew}>Add as new movie</p>
+                        <p className="home-button" name="delete" onClick={props.deleteItem}>Delete</p>
+                        <p className="home-button" name="clear" onClick={props.clearForm}>Clear</p>
                         <p className='home-button' onClick={() => props.onClick({})}>Hide</p>
                     </div>
                 )
@@ -48,10 +84,14 @@
                     }
 
                     this.onClick = this.onClick.bind(this);
+                    this.handleChange = this.handleChange.bind(this)
+                    this.clearForm = this.clearForm.bind(this)
+                    this.saveForm = this.saveForm.bind(this)
+                    this.deleteItem = this.deleteItem.bind(this)
+                    this.addNew = this.addNew.bind(this)
                 }
 
                 onClick = film => {
-                    console.log("clicked ", film)
                     this.setState(prevState => {
                         if (film === prevState.filmDetail || Object.keys(film).length == 0) {
                             return {
@@ -66,8 +106,85 @@
                     })
                 }
 
+                handleChange = (event) => {
+
+                    let newItem = this.state.filmDetail;
+                    newItem[event.target.name] = event.target.value
+
+                    this.setState({filmDetail: newItem})
+                }
+
+                clearForm = () => {
+                    this.setState({filmDetail: {}})
+                }
+
+                saveForm = () => {
+                    console.log("saving form")
+                    if (this.state.filmDetail === {}) return;
+
+                    console.log("Film detail: ", this.state.filmDetail)
+
+                    fetch('/api/movie?id=' + this.state.filmDetail._id, {
+                        method: "PUT",
+                        headers: { 'Content-Type': 'application/json'},
+                        body: JSON.stringify(this.state.filmDetail)
+                    })
+                        .then(res => res.json())
+                        .then(json => {console.log(json)})
+                        .catch(err => console.log(err))
+
+                }
+
+                deleteItem = () => {
+                    console.log("deleting movie")
+
+                    if (this.state.filmDetail === {}) return
+
+                    let newFilms = this.state.films.filter(item => item.key != this.state.filmDetail._id)
+
+                    fetch('/api/movie?id=' + this.state.filmDetail._id, {
+                        method: "DELETE",
+                        headers: { 'Content-Type': 'application/json'},
+                        body: JSON.stringify(this.state.filmDetail)
+                    })
+                        .then(res => res.json())
+                        .then(json => {
+                            console.log(json);
+                            this.setState({films: newFilms})
+
+                        })
+                        .catch(err => console.log(err))
+
+                }
+
+                addNew = () => {
+                    
+                    console.log("Adding new")
+                    console.log(this.state.films)
+                    if (this.state.filmDetail === {}) return
+
+                    const {_id, ...itemToAdd} = this.state.filmDetail
+
+                    console.log(itemToAdd)
+
+                    fetch('/api/movie', {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json'},
+                        body: JSON.stringify(itemToAdd)
+                    })
+                        .then(res => res.json())
+                        .then(json => {
+                            console.log(json)
+                            let newFilms = this.state.films
+                            newFilms.push(< Movie key={json._id} film={itemToAdd} onClick={this.onClick} />)
+                            this.setState({films: newFilms})
+                            
+                        })
+                        .catch(err => console.log(err))
+
+                }
+
                 componentDidMount() {
-                    console.log("mounted, done")
                     const moviesArray = {{{movies}}}
 
                     let filmsArray = moviesArray.map(film => < Movie key={film._id} film={film} onClick={this.onClick} />)
@@ -84,7 +201,16 @@
                             <ul>
                                 {this.state.films}
                             </ul>
-                            {this.state.showDetail && < Detail film={filmDetail} onClick={this.onClick} />}
+                            {this.state.showDetail && 
+                                < Detail 
+                                    film={filmDetail} 
+                                    onClick={this.onClick} 
+                                    handleChange={this.handleChange} 
+                                    clearForm={this.clearForm} 
+                                    saveForm={this.saveForm} 
+                                    deleteItem={this.deleteItem} 
+                                    addNew={this.addNew}
+                                />}
                             
                         </div>
                     )
